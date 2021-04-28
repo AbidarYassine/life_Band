@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Update">
+
+    <Button
+        android:id="@+id/Savebtn"
+        android:layout_width="202dp"
+        android:layout_height="47dp"
+        android:text="Save"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:backgroundTint="#DDB7AB"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textViewselect"
+        android:layout_width="263dp"
+        android:layout_height="41dp"
+
+        android:fontFamily="serif"
+        android:text="Select Your Child's Disease"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/UpdateAge"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="255dp"
+        android:layout_height="34dp"
+        android:fontFamily="serif"
+        android:text="Update  your profile"
+        android:textAlignment="center"
+        android:textColor="#65815F"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/email_update"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        tools:ignore="RtlCompat" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="236dp"
+        android:layout_height="247dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/lifeband_logo" />
+
+    <EditText
+        android:id="@+id/UpdateName"
+        android:layout_width="247dp"
+        android:layout_height="49dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Name"
+        android:drawableRight="@drawable/ic_person"
+        android:textColorHighlight="#DDB7AB"
+        android:textColorLink="#DDB7AB"
+        android:textColorHint="#999b84"
+        app:layout_constraintBottom_toTopOf="@+id/UpdateAge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email_update" />
+
+
+    <EditText
+        android:id="@+id/email_update"
+        android:layout_width="244dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:fontFamily="serif"
+        android:hint="Email"
+        android:textColorHighlight="#DDB7AB"
+        android:textColorLink="#DDB7AB"
+        android:drawableRight="@drawable/ic_email"
+        android:textColorHint="#999b84"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/UpdateName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        tools:ignore="MissingConstraints,UnknownId" />
+
+    <EditText
+        android:id="@+id/UpdateAge"
+        android:layout_width="251dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColorHighlight="#DDB7AB"
+        android:textColorLink="#DDB7AB"
+        android:hint="Age"
+        android:textColorHint="#999b84"
+        app:layout_constraintBottom_toTopOf="@+id/textViewselect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/UpdateName" />
+
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="286dp"
+        android:layout_height="154dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/Savebtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewselect"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="57dp"
+            tools:layout_editor_absoluteY="512dp">
+
+            <CheckBox
+                android:id="@+id/checkBox1U"
+                android:layout_width="133dp"
+                android:layout_height="match_parent"
+                android:text="Diabetes"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="358dp"
+                tools:layout_editor_absoluteY="407dp"></CheckBox>
+
+            <CheckBox
+                android:id="@+id/checkBox2U"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Blood Pressure"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="358dp"
+                tools:layout_editor_absoluteY="407dp"></CheckBox>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkBox3U"
+                android:layout_width="133dp"
+                android:layout_height="match_parent"
+                android:text="Anemia"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="358dp"
+                tools:layout_editor_absoluteY="407dp"></CheckBox>
+
+            <CheckBox
+                android:id="@+id/checkBox4U"
+                android:layout_width="126dp"
+                android:layout_height="match_parent"
+                android:text="Asthma"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="358dp"
+                tools:layout_editor_absoluteY="407dp"></CheckBox>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkBox5U"
+                android:layout_width="133dp"
+                android:layout_height="match_parent"
+                android:text="Epilepsy"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="358dp"
+                tools:layout_editor_absoluteY="407dp"></CheckBox>
+
+            <CheckBox
+                android:id="@+id/checkBox6U"
+                android:layout_width="128dp"
+                android:layout_height="match_parent"
+                android:text="Heart failure"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="358dp"
+                tools:layout_editor_absoluteY="407dp"></CheckBox>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

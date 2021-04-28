@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1042110966815",
+    "firebase_url": "https://lifeband-50524.firebaseio.com",
+    "project_id": "lifeband-50524",
+    "storage_bucket": "lifeband-50524.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1042110966815:android:3f817977c8b9be2f77f92a",
+        "android_client_info": {
+          "package_name": "com.example.lifeband"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1042110966815-i8i3gnbfa6su57dgu90kll4src3n7ba0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxgg6SsWJHPwNTWSwUUZ2i6WVDVTkTUCc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1042110966815-i8i3gnbfa6su57dgu90kll4src3n7ba0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
