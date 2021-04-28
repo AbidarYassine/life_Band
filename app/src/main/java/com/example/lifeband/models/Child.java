@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class Child implements Serializable {
     private String guardians_id;
+    private String id;
     private List<Map<String, String>> history;
 
     public String getGuardians_id() {
@@ -24,10 +25,19 @@ public class Child implements Serializable {
         this.history = history;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "Child{" +
                 "guardians_id='" + guardians_id + '\'' +
+                ", id='" + id + '\'' +
                 ", history=" + history +
                 '}';
     }
