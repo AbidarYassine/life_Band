@@ -1,5 +1,6 @@
 package com.example.lifeband;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,14 +12,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lifeband.db.ConnexionDb;
+import com.example.lifeband.models.Child;
 import com.example.lifeband.models.Guardian;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class Home extends AppCompatActivity {
     Button updatebtn;
@@ -29,6 +36,8 @@ public class Home extends AppCompatActivity {
     TextView text_view_BPM;
     TextView text_view_temp;
     private static final String TAG = "Home";
+    Guardian guardian;
+    Child child;
 
 
     @Override
@@ -39,9 +48,33 @@ public class Home extends AppCompatActivity {
         updatebtn = findViewById(R.id.updatebtn);
         text_view_BPM = findViewById(R.id.text_view_BPM);
         text_view_temp = findViewById(R.id.text_view_temp);
-//        String uid = FirebaseAuth.getInstance().getCurrentUser();
-//        Guardian guardian = FirebaseDatabase.getInstance().getReference().child("Guardians");
-//        ConnexionDb.db().collection("").whereEqualTo();
+        // get uid
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        // get all info by uid
+        ConnexionDb.db().collection("Guardians").document(uid).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        guardian = document.toObject(Guardian.class);
+                        Log.i(TAG, "onCreate: " + guardian.toString());
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
+//        ConnexionDb.db().collection("childs")
+//                .whereEqualTo("Email", "lifeband@gmail.com")
+//                .limit(1)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        for (QueryDocumentSnapshot document : task.getResult()) {
+//                            child = document.toObject(Child.class);
+//                            Log.i(TAG, "onComplete: " + child.toString());
+//                        }
+//                    } else {
+//                        Log.d(TAG, "Error getting documents: ", task.getException());
+//                    }
+//                });
         updatebtn.setOnClickListener(view -> {
             Intent Intent3 = new Intent(Home.this, Update.class);
             startActivity(Intent3);
@@ -55,7 +88,9 @@ public class Home extends AppCompatActivity {
                 String value = dataSnapshot.getValue(String.class);
                 Log.d(TAG, "Value is: " + value);
                 String v = value + " BPM";
-//                if ()
+                if (Integer.getInteger(guardian.getChildAge()) > 10) {
+                    // TODO  finish this topic
+                }
                 text_view_BPM.setText(v);
 
             }
@@ -83,6 +118,5 @@ public class Home extends AppCompatActivity {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
-        Toast.makeText(this, FirebaseAuth.getInstance().getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
     }
 }
