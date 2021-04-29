@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="age_array">
+        <item>1mo - 1year</item>
+        <item>1-3 year</item>
+        <item>3-6 year</item>
+        <item>6-12 year</item>
+        <item>12-18 year</item>
+    </string-array>
+</resources>

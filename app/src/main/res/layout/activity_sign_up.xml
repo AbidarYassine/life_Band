@@ -61,13 +61,15 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         tools:ignore="MissingConstraints" />
 
-    <EditText
+    <Spinner
         android:id="@+id/age_signup"
         android:layout_width="229dp"
         android:layout_height="45dp"
         android:ems="10"
         android:fontFamily="serif"
         android:textColorHint="#999b84"
+        android:entries="@array/age_array"
+        android:spinnerMode="dropdown"
         android:backgroundTint="#DDB7AB"
         android:hint="Enter Your Child's Age"
         android:inputType="textEmailAddress"

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+
+    android:padding="10dp"
+    app:layout_constraintCircleRadius="30dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Mon titre par défaut"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        android:shadowColor="#FF0000"
+        android:text="this is my content . are you happy ?"
+        android:textColor="@android:color/black"
+        android:textSize="18dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_500"
+        android:text="Okay
+"
+        android:textColorHighlight="@color/purple_200"
+        android:textColorHint="@color/design_default_color_primary_dark"
+        android:textColorLink="@color/purple_700"
+        app:cornerRadius="10dp"
+        app:rippleColor="@color/teal_200"
+        app:strokeColor="@color/teal_700" />
+</LinearLayout>
