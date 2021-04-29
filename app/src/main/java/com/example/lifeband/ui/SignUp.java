@@ -1,22 +1,20 @@
-package com.example.lifeband;
+package com.example.lifeband.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.lifeband.R;
 import com.example.lifeband.db.ChildDb;
 import com.example.lifeband.models.Child;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -124,8 +122,10 @@ public class SignUp extends AppCompatActivity {
                         // add child automatiqument after sign up of guard
                         Child child = new Child();
                         child.setGuardians_id(GuardiansID);
-                        List<Map<String, String>> history = new ArrayList<>();
-                        child.setHistory(history);
+                        List<Map<String, String>> historyBPM = new ArrayList<>();
+                        List<Map<String, String>> historyTEMP = new ArrayList<>();
+                        child.setHistoryTEMP(historyTEMP);
+                        child.setHistoryBPM(historyBPM);
                         ChildDb.addChild(child);
                     }).addOnFailureListener(e -> Log.d(TAG, "onFailure:user is NOT created  " + e.toString()));
                     // Successful message and display the Home Page

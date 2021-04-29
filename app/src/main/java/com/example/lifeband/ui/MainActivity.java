@@ -1,12 +1,13 @@
-package com.example.lifeband;
+package com.example.lifeband.ui;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
+
+import com.example.lifeband.R;
 
 // MainActivity class it is the( Welcome page )
 public class MainActivity extends AppCompatActivity {

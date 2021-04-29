@@ -9,26 +9,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LifeBand">
-        <activity
-            android:name=".Update"
-            android:parentActivityName=".Home" />
-
-        <activity
-            android:name=".SignUp"
-            android:parentActivityName=".MainActivity" />
-
-        <activity
-            android:name=".LogIn"
-            android:parentActivityName=".MainActivity" />
-
-        <activity android:name=".Home" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.History">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.Update"
+            android:parentActivityName=".ui.Home" />
+        <activity
+            android:name=".ui.SignUp"
+            android:parentActivityName=".ui.MainActivity" />
+        <activity
+            android:name=".ui.LogIn"
+            android:parentActivityName=".ui.MainActivity" />
+        <activity android:name=".ui.Home" />
+        <activity android:name=".ui.MainActivity"></activity>
     </application>
 
 </manifest>

@@ -1,21 +1,12 @@
-package com.example.lifeband;
+package com.example.lifeband.ui;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import android.app.ActionBar;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -23,31 +14,21 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
+import com.example.lifeband.R;
 import com.example.lifeband.db.ChildDb;
-import com.example.lifeband.db.ConnexionDb;
 import com.example.lifeband.db.GuardiantDb;
-import com.example.lifeband.models.Child;
-import com.example.lifeband.models.Guardian;
 import com.example.lifeband.utils.CustomPopup;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.SetOptions;
 
 
 public class Home extends AppCompatActivity {
@@ -78,22 +59,22 @@ public class Home extends AppCompatActivity {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         // get guard by uid
         GuardiantDb.getGuardiant(guard -> {
-            // get child and BPM ,TEMP to update history
-            Log.i(TAG, "onCreate: " + guard);
-            // get child by uid
+            // get child by uid and BPM ,TEMP to update history
             ChildDb.getChildByGuarId(child -> {
                 Log.i(TAG, "onCreate: child " + child.toString());
                 refBPM.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // get data BPM.
-                        String value = dataSnapshot.getValue(String.class);
-                        String v = value + " BPM";
+                        String valueBpm = dataSnapshot.getValue(String.class);
+
+                        String v = valueBpm + " BPM";
                         String age = guard.getChildAge();
-                        int BPM = Integer.parseInt(value);
+                        int BPM = Integer.parseInt(valueBpm);
                         // send age and BPM to another method for treatment
                         checkBPM(age, BPM);
                         text_view_BPM.setText(v);
+                        ChildDb.updateHistoryBPM(child, valueBpm);
                     }
 
                     @Override
@@ -107,13 +88,15 @@ public class Home extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // This method is called once with the initial value and again
                         // whenever data at this location is updated.
-                        String value = dataSnapshot.getValue(String.class);
-                        String v = value + "C " + "°";
+                        String valueTEMP = dataSnapshot.getValue(String.class);
+                        String v = valueTEMP + " C " + "°";
                         String age = guard.getChildAge();
-                        double TEMP = Double.parseDouble(value);
+                        double TEMP = Double.parseDouble(valueTEMP);
                         // send age and BPM to another method for treatment
                         checkTEMP(age, TEMP);
                         text_view_temp.setText(v);
+                        ChildDb.updateHistoryTEMP(child, valueTEMP);
+
                     }
 
                     @Override
@@ -125,16 +108,6 @@ public class Home extends AppCompatActivity {
             }, uid);
 
         }, uid);
-        // get all info by uid
-
-//        CollectionReference complaintsRef = ConnexionDb.db().collection("childs");
-//        complaintsRef.document(child.getId()).set(t, SetOptions.merge()).addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                Toast.makeText(getApplicationContext(), "Tutor Updated successfully", Toast.LENGTH_SHORT).show();
-//            } else {
-//                Toast.makeText(getApplicationContext(), "Update Failed ,Try Again !", Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
 
     }
@@ -271,5 +244,10 @@ public class Home extends AppCompatActivity {
         customPopup.getButton().setOnClickListener(v -> {
             customPopup.dismiss();
         });
+    }
+
+    public void gotoHistory(View view) {
+        Intent intent = new Intent(this, History.class);
+        startActivity(intent);
     }
 }
