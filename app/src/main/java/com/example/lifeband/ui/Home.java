@@ -248,6 +248,8 @@ public class Home extends AppCompatActivity {
 
     public void gotoHistory(View view) {
         Intent intent = new Intent(this, History.class);
+        intent.putExtra("current_temp", text_view_temp.getText().toString());
+        intent.putExtra("current_bpm", text_view_BPM.getText().toString());
         startActivity(intent);
     }
 }

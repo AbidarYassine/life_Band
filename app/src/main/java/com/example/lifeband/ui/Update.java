@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.lifeband.R;
+import com.example.lifeband.db.GuardiantDb;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -25,7 +27,8 @@ import java.util.regex.Pattern;
 public class Update extends AppCompatActivity {
 
     // Declare variables.
-    EditText EmailText, NameText, AgeText;
+    EditText EmailText, NameText;
+    Spinner AgeText;
     CheckBox CB1, CB2, CB3, CB4, CB5, CB6;
     Button buttonUpdate;
 
@@ -41,6 +44,7 @@ public class Update extends AppCompatActivity {
         getSupportActionBar().setTitle("Update");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
         //Fitch each variable with what component fits in the interface.
@@ -61,13 +65,17 @@ public class Update extends AppCompatActivity {
         databaseAuth = FirebaseAuth.getInstance();
         dataStore = FirebaseFirestore.getInstance();
         UpdateGuardian = databaseAuth.getCurrentUser();
-
+        GuardiantDb.getGuardiant(guardian -> {
+            EmailText.setText(guardian.getEmail());
+            NameText.setText(guardian.getChildName());
+            AgeText.setSelection(getIndex(AgeText, guardian.getChildAge()));
+        }, uid);
         //When the user click on Save button then
         buttonUpdate.setOnClickListener(v -> {
 
             String emailDB = EmailText.getText().toString();
             String nameDB = NameText.getText().toString();
-            String ageDB = AgeText.getText().toString();
+            String ageDB = AgeText.getSelectedItem().toString();
 
             List DiseaseArray = new ArrayList();
             if (CB1.isChecked()) DiseaseArray.add("Diabetes");
@@ -94,8 +102,8 @@ public class Update extends AppCompatActivity {
                 NameText.setError("Name can not be numbers");
                 return;
             }
-            if (!AgeText.getText().toString().matches("[0-9]+")) {
-                AgeText.setError("Age should be numbers ");
+            if (!AgeText.getSelectedItem().toString().matches("[0-9]+")) {
+                Toast.makeText(this, "Age should be numbers ", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -117,5 +125,14 @@ public class Update extends AppCompatActivity {
             });
 
         });
+    }
+
+    private int getIndex(Spinner spinner, String myString) {
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)) {
+                return i;
+            }
+        }
+        return 0;
     }
 }

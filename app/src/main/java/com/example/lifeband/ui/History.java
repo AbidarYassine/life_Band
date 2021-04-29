@@ -2,22 +2,33 @@ package com.example.lifeband.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
+import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.lifeband.R;
 import com.example.lifeband.db.ChildDb;
+import com.example.lifeband.ui.adapter.MyAdapter;
+import com.example.lifeband.utils.AdapterData;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class History extends AppCompatActivity {
-    TableLayout tl;
+    ListView listView_data;
+    SearchView searchView;
+    private static final String TAG = "History";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +36,68 @@ public class History extends AppCompatActivity {
         setContentView(R.layout.activity_history);
         getSupportActionBar().setTitle("History");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        tl = (TableLayout) findViewById(R.id.table_result);
-//        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//        ChildDb.getChildByGuarId(child -> {
-//
-//        }, uid);
-        addNewRow();
+        setupView();
+//        listView_data.setAdapter(new MyAdapter(tutorList, getApplicationContext()));
+
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Intent intent = getIntent();
+        String curentTEMP = intent.getStringExtra("current_temp").split(" ")[0];
+        String currentBPM = intent.getStringExtra("current_bpm").split(" ")[0];
+        ChildDb.getChildByGuarId(child -> {
+            Log.i(TAG, "onCreate: " + child.getHistoryBPM().size());
+            List<AdapterData> adapterDataList = new ArrayList<>();
+            if (child.getHistoryBPM().size() >= child.getHistoryTEMP().size()) {
+                for (int i = 0; i < child.getHistoryBPM().size(); i++) {
+                    AdapterData adapterData = new AdapterData();
+                    adapterData.setBPM(child.getHistoryBPM().get(i).get("BPM"));
+                    adapterData.setDate(child.getHistoryBPM().get(i).get("date"));
+                    String temp = getByDateTEMP(child.getHistoryBPM().get(i).get("date"), child.getHistoryTEMP());
+                    if (temp == null) {
+                        temp = curentTEMP;
+                    }
+                    adapterData.setTEMP(temp);
+                    adapterDataList.add(adapterData);
+                }
+            } else {
+                for (int i = 0; i < child.getHistoryTEMP().size(); i++) {
+                    AdapterData adapterData = new AdapterData();
+                    adapterData.setTEMP(child.getHistoryTEMP().get(i).get("TEMP"));
+                    adapterData.setDate(child.getHistoryTEMP().get(i).get("date"));
+                    String bpm = getByDateBPM(child.getHistoryTEMP().get(i).get("date"), child.getHistoryBPM());
+                    if (bpm == null) {
+                        bpm = currentBPM;
+                    }
+                    adapterData.setBPM(bpm);
+                    adapterDataList.add(adapterData);
+                }
+            }
+            listView_data.setAdapter(new MyAdapter(adapterDataList, getApplicationContext()));
+        }, uid);
+
+    }
+
+    private String getByDateTEMP(String date, List<Map<String, String>> historyTEMP) {
+        for (int i = 0; i < historyTEMP.size(); i++) {
+            if (historyTEMP.get(i).get("date").equalsIgnoreCase(date)) {
+                return historyTEMP.get(i).get("TEMP");
+            }
+        }
+        return null;
+    }
+
+    private String getByDateBPM(String date, List<Map<String, String>> historyTEMP) {
+        for (int i = 0; i < historyTEMP.size(); i++) {
+            if (historyTEMP.get(i).get("date").equalsIgnoreCase(date)) {
+                return historyTEMP.get(i).get("BPM");
+            }
+        }
+        return null;
+    }
+
+    private void setupView() {
+        listView_data = findViewById(R.id.listView_data);
+        searchView = findViewById(R.id.searchView);
+
     }
 
     public void addNewRow() {
@@ -82,9 +149,9 @@ public class History extends AppCompatActivity {
         label_androidt.setTextColor(Color.WHITE); // set the color
         label_androidt.setGravity(Gravity.CENTER); // set the padding (if required)
         tr_head.addView(label_androidt);
-        tl.addView(tr_head, new TableLayout.LayoutParams(
-                TableRow.LayoutParams.WRAP_CONTENT,                    //part4
-                TableRow.LayoutParams.WRAP_CONTENT));
+//        tl.addView(tr_head, new TableLayout.LayoutParams(
+//                TableRow.LayoutParams.WRAP_CONTENT,                    //part4
+//                TableRow.LayoutParams.WRAP_CONTENT));
 
 
     }

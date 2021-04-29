@@ -10,11 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LifeBand">
         <activity android:name=".ui.History">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.Update"
@@ -26,7 +22,13 @@
             android:name=".ui.LogIn"
             android:parentActivityName=".ui.MainActivity" />
         <activity android:name=".ui.Home" />
-        <activity android:name=".ui.MainActivity"></activity>
+        <activity android:name=".ui.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
