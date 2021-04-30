@@ -122,10 +122,8 @@ public class SignUp extends AppCompatActivity {
                         // add child automatiqument after sign up of guard
                         Child child = new Child();
                         child.setGuardians_id(GuardiansID);
-                        List<Map<String, String>> historyBPM = new ArrayList<>();
-                        List<Map<String, String>> historyTEMP = new ArrayList<>();
-                        child.setHistoryTEMP(historyTEMP);
-                        child.setHistoryBPM(historyBPM);
+                        List<Map<String, String>> history = new ArrayList<>();
+                        child.setHistory(history);
                         ChildDb.addChild(child);
                     }).addOnFailureListener(e -> Log.d(TAG, "onFailure:user is NOT created  " + e.toString()));
                     // Successful message and display the Home Page

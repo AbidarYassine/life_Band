@@ -55,7 +55,7 @@ public class MyAdapter extends BaseAdapter {
         }
 //        Car car = this.cars.get(position);
         AdapterData adapterData = this.data.get(position);
-        holder.tv_TEMP.setText(adapterData.getTEMP() + " °C");
+        holder.tv_TEMP.setText(adapterData.getTemp() + " °C");
         holder.tv_date.setText(adapterData.getDate());
         holder.tv_BPM.setText(adapterData.getBPM() + " BPM");
         return convertView;

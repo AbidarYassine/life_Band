@@ -7,8 +7,8 @@ import java.util.Map;
 public class Child implements Serializable {
     private String guardians_id;
     private String id;
-    private List<Map<String, String>> historyBPM;
-    private List<Map<String, String>> historyTEMP;
+    private List<Map<String, String>> history;
+
 
     public String getGuardians_id() {
         return guardians_id;
@@ -26,20 +26,13 @@ public class Child implements Serializable {
         this.id = id;
     }
 
-    public List<Map<String, String>> getHistoryBPM() {
-        return historyBPM;
+
+    public List<Map<String, String>> getHistory() {
+        return history;
     }
 
-    public void setHistoryBPM(List<Map<String, String>> historyBPM) {
-        this.historyBPM = historyBPM;
-    }
-
-    public List<Map<String, String>> getHistoryTEMP() {
-        return historyTEMP;
-    }
-
-    public void setHistoryTEMP(List<Map<String, String>> historyTEMP) {
-        this.historyTEMP = historyTEMP;
+    public void setHistory(List<Map<String, String>> history) {
+        this.history = history;
     }
 
     @Override
@@ -47,8 +40,7 @@ public class Child implements Serializable {
         return "Child{" +
                 "guardians_id='" + guardians_id + '\'' +
                 ", id='" + id + '\'' +
-                ", historyBPM=" + historyBPM +
-                ", historyTEMP=" + historyTEMP +
+                ", history=" + history +
                 '}';
     }
 }

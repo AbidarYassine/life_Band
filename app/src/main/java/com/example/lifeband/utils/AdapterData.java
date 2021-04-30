@@ -3,7 +3,7 @@ package com.example.lifeband.utils;
 public class AdapterData {
     private String date;
     private String BPM;
-    private String TEMP;
+    private String Temp;
 
     public String getDate() {
         return date;
@@ -21,18 +21,18 @@ public class AdapterData {
         this.BPM = BPM;
     }
 
-    public String getTEMP() {
-        return TEMP;
+    public String getTemp() {
+        return Temp;
     }
 
-    public void setTEMP(String TEMP) {
-        this.TEMP = TEMP;
+    public void setTemp(String temp) {
+        Temp = temp;
     }
 
     public AdapterData(String date, String BPM, String TEMP) {
         this.date = date;
         this.BPM = BPM;
-        this.TEMP = TEMP;
+        this.Temp = TEMP;
     }
 
     public AdapterData() {
@@ -44,7 +44,7 @@ public class AdapterData {
         return "AdapterData{" +
                 "date='" + date + '\'' +
                 ", BPM='" + BPM + '\'' +
-                ", TEMP='" + TEMP + '\'' +
+                ", TEMP='" + Temp + '\'' +
                 '}';
     }
 }

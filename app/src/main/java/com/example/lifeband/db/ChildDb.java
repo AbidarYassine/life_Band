@@ -46,8 +46,7 @@ public class ChildDb {
     public static void addChild(Child child) {
         Map<String, Object> childToSave = new HashMap<>();
         childToSave.put("guardians_id", child.getGuardians_id());
-        childToSave.put("historyBPM", child.getHistoryBPM());
-        childToSave.put("historyTEMP", child.getHistoryTEMP());
+        childToSave.put("history", child.getHistory());
         ConnexionDb.db().collection("childs")
                 .add(childToSave)
                 .addOnSuccessListener(documentReference -> {
@@ -56,20 +55,21 @@ public class ChildDb {
                 .addOnFailureListener(e -> Log.w("TAG", "Error adding document", e));
     }
 
-    public static void updateHistoryBPM(Child child, String valueBpm) {
-        List<Map<String, String>> history = child.getHistoryBPM();
+    public static void updateHistory(Child child, String valueBpm, String valueTemp) {
+        List<Map<String, String>> history = child.getHistory();
         Map<String, String> data = new HashMap<>();
         data.put("BPM", valueBpm);
+        data.put("TEMP", valueTemp);
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy H:mm:ss");
         String strDate;
         strDate = formatter.format(date);
         data.put("date", strDate);
         history.add(data);
-        child.setHistoryBPM(history);
+        child.setHistory(history);
         Map<String, Object> t = new HashMap<>();
         t.put("guardians_id", child.getGuardians_id());
-        t.put("historyBPM", history);
+        t.put("history", history);
         CollectionReference complaintsRef = ConnexionDb.db().collection("childs");
         complaintsRef.document(child.getId()).set(t, SetOptions.merge()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -80,28 +80,5 @@ public class ChildDb {
         });
     }
 
-    public static void updateHistoryTEMP(Child child, String valueTEMP) {
-        List<Map<String, String>> history = child.getHistoryTEMP();
-        Map<String, String> data = new HashMap<>();
-        data.put("TEMP", valueTEMP);
-        Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy H:mm:ss");
-        String strDate;
-        strDate = formatter.format(date);
-        data.put("date", strDate);
-        history.add(data);
-        child.setHistoryTEMP(history);
-        Map<String, Object> t = new HashMap<>();
-        t.put("guardians_id", child.getGuardians_id());
-        t.put("historyTEMP", history);
-        CollectionReference complaintsRef = ConnexionDb.db().collection("childs");
-        complaintsRef.document(child.getId()).set(t, SetOptions.merge()).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.i(TAG, "updateHistory: ok");
-            } else {
-                Log.i(TAG, "updateHistory: erreur");
-            }
-        });
-    }
 
 }

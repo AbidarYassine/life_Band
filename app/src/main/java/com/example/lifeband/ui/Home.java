@@ -1,5 +1,6 @@
 package com.example.lifeband.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -8,6 +9,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import com.example.lifeband.R;
 import com.example.lifeband.db.ChildDb;
 import com.example.lifeband.db.GuardiantDb;
+import com.example.lifeband.utils.AdapterData;
 import com.example.lifeband.utils.CustomPopup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -41,7 +44,7 @@ public class Home extends AppCompatActivity {
     ImageView imageBPM;
     ImageView imageTemp;
     private static final String TAG = "Home";
-
+    DatabaseReference rootRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,20 @@ public class Home extends AppCompatActivity {
         });
         refBPM = database.getReference("BPM");
         refTemp = database.getReference("Temp");
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        rootRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.i(TAG, "onDataChange: " + snapshot.toString());
+                AdapterData adapterData = snapshot.getValue(AdapterData.class);
+                Log.i(TAG, "onDataChange: " + adapterData);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         // get uid
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         // get guard by uid
@@ -62,51 +79,32 @@ public class Home extends AppCompatActivity {
             // get child by uid and BPM ,TEMP to update history
             ChildDb.getChildByGuarId(child -> {
                 Log.i(TAG, "onCreate: child " + child.toString());
-                refBPM.addValueEventListener(new ValueEventListener() {
+                rootRef.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // get data BPM.
-                        String valueBpm = dataSnapshot.getValue(String.class);
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        AdapterData adapterData = snapshot.getValue(AdapterData.class);
 
-                        String v = valueBpm + " BPM";
                         String age = guard.getChildAge();
-                        int BPM = Integer.parseInt(valueBpm);
+                        int BPM = Integer.parseInt(adapterData.getBPM());
+                        double TEMP = Double.parseDouble(adapterData.getTemp());
                         // send age and BPM to another method for treatment
                         checkBPM(age, BPM);
-                        text_view_BPM.setText(v);
-                        ChildDb.updateHistoryBPM(child, valueBpm);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        // Failed to read value
-                        Log.w(TAG, "Failed to read value.", error.toException());
-                    }
-                });
-                refTemp.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // This method is called once with the initial value and again
-                        // whenever data at this location is updated.
-                        String valueTEMP = dataSnapshot.getValue(String.class);
-                        String v = valueTEMP + " C " + "°";
-                        String age = guard.getChildAge();
-                        double TEMP = Double.parseDouble(valueTEMP);
-                        // send age and BPM to another method for treatment
                         checkTEMP(age, TEMP);
-                        text_view_temp.setText(v);
-                        ChildDb.updateHistoryTEMP(child, valueTEMP);
-
+                        // add in history
+                        ChildDb.updateHistory(child, adapterData.getBPM(), adapterData.getTemp());
+                        // update View
+                        String vBPM = adapterData.getBPM() + " BPM";
+                        String vTemp = adapterData.getTemp() + " C " + "°";
+                        text_view_BPM.setText(vBPM);
+                        text_view_temp.setText(vTemp);
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError error) {
-                        // Failed to read value
-                        Log.w(TAG, "Failed to read value.", error.toException());
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.i(TAG, "onCancelled: Cancelled");
                     }
                 });
             }, uid);
-
         }, uid);
 
 
@@ -196,6 +194,8 @@ public class Home extends AppCompatActivity {
     private void showAlertBPM() {
         notification();
         openDialog();
+        MediaPlayer ring = MediaPlayer.create(Home.this, R.raw.bpm);
+        ring.start();
         imageBPM.setImageResource(R.drawable.heartalert);
     }
 
@@ -206,6 +206,8 @@ public class Home extends AppCompatActivity {
 
     // show image Alert Temp
     private void showAlertTEMP() {
+        MediaPlayer ring = MediaPlayer.create(Home.this, R.raw.temp);
+        ring.start();
         notification();
         openDialog();
         imageTemp.setImageResource(R.drawable.tempalert);
@@ -223,13 +225,11 @@ public class Home extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
         long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500};
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "guard")
                 .setContentText("Life Band Notification")
                 .setSmallIcon(R.drawable.heartalert)
                 .setVibrate(pattern)
-                .setSound(alarmSound, AudioManager.STREAM_NOTIFICATION)
                 .setAutoCancel(false)
                 .setContentText("Test Content");
         NotificationManagerCompat notificationCompat = NotificationManagerCompat.from(this);
@@ -248,8 +248,6 @@ public class Home extends AppCompatActivity {
 
     public void gotoHistory(View view) {
         Intent intent = new Intent(this, History.class);
-        intent.putExtra("current_temp", text_view_temp.getText().toString());
-        intent.putExtra("current_bpm", text_view_BPM.getText().toString());
         startActivity(intent);
     }
 }
